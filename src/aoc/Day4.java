@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class Day4 implements Day {
+
     @Override
     public long part1(List<String> input) {
         long count = 0;
@@ -24,7 +25,6 @@ public class Day4 implements Day {
                 .count();
     }
 
-
     private boolean isMatch(List<String> input, int x, int y, int Δx, int Δy, int steps) {
         if (steps == 4) {
             return true;
@@ -40,6 +40,28 @@ public class Day4 implements Day {
 
     @Override
     public long part2(List<String> input) {
-        return 0;
+        int count = 0;
+        for (int x = 1; x < input.getFirst().length() - 1; x++) {
+            for (int y = 1; y < input.size() - 1; y++) {
+                if (input.get(y).charAt(x) != 'A') {
+                    continue;
+                }
+
+                char northwest = input.get(y - 1).charAt(x - 1);
+                char northeast = input.get(y - 1).charAt(x + 1);
+                char southwest = input.get(y + 1).charAt(x - 1);
+                char southeast = input.get(y + 1).charAt(x + 1);
+
+                if (isMS(northwest, southeast) && isMS(northeast, southwest)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private boolean isMS(char c1, char c2) {
+        return (c1 == 'M' && c2 == 'S')
+                || (c1 == 'S' && c2 == 'M');
     }
 }
