@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        var days = List.of(new Day1(), new Day2(), new Day3(), new Day4(), new Day5(), new Day6());
+        var days = List.of(new Day1(), new Day2(), new Day3(), new Day4(), new Day5(), new Day6(), new Day7());
 
         for (var day : days) {
             String name = day.getClass().getSimpleName();
