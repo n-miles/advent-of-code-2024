@@ -1,20 +1,53 @@
 package aoc;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 public class Day6 implements Day {
 
     @Override
     public long part1(List<String> input) {
+        return countSteps(input).get();
+    }
+
+    @Override
+    public long part2(List<String> input) {
+        return IntStream.range(0, input.size()).boxed()
+                .flatMap(y -> IntStream.range(0, input.get(y).length()).mapToObj(x -> new Point(x, y))
+                ).filter(point -> {
+                    if (input.get(point.y()).charAt(point.x()) == '^') {
+                        return false;
+                    }
+
+                    List<String> modifiedInput = new ArrayList<>();
+                    for (int i = 0; i < input.size(); i++) {
+                        if (i == point.y()) {
+                            modifiedInput.add(input.get(i).substring(0, point.x()) + '#' + input.get(i).substring(point.x() + 1));
+                        } else {
+                            modifiedInput.add(input.get(i));
+                        }
+                    }
+                    return countSteps(modifiedInput).isEmpty();
+                })
+                .count();
+    }
+
+    private Optional<Integer> countSteps(List<String> input) {
         Dude dude = new Dude(input);
         Set<Point> visited = new HashSet<>();
+        Set<Pair<Point, Direction>> loopDetector = new HashSet<>();
 
         try {
             while (true) {
                 input.get(dude.position.y()).charAt(dude.position.x());
                 visited.add(dude.position);
+                if (!loopDetector.add(new Pair<>(dude.position, dude.direction))) {
+                    return Optional.empty();
+                }
 
                 int Δx = 0;
                 int Δy = 0;
@@ -50,15 +83,8 @@ public class Day6 implements Day {
                 }
             }
         } catch (IndexOutOfBoundsException e) {
-            // lmao
+            return Optional.of(visited.size());
         }
-
-        return visited.size();
-    }
-
-    @Override
-    public long part2(List<String> input) {
-        return 0;
     }
 
     private enum Direction {
