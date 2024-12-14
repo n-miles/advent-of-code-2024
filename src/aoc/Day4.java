@@ -1,5 +1,7 @@
 package aoc;
 
+import static aoc.Utils.allPoints;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -7,13 +9,9 @@ public class Day4 implements Day {
 
     @Override
     public long part1(List<String> input) {
-        long count = 0;
-        for (int x = 0; x < input.getFirst().length(); x++) {
-            for (int y = 0; y < input.size(); y++) {
-                count += matchesStartingAt(input, x, y);
-            }
-        }
-        return count;
+        return allPoints(input.getFirst().length(), input.size())
+                .mapToLong(point -> matchesStartingAt(input, point.x(), point.y()))
+                .sum();
     }
 
     private long matchesStartingAt(List<String> input, int x, int y) {

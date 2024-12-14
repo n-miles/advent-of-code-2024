@@ -1,11 +1,12 @@
 package aoc;
 
+import static aoc.Utils.allPoints;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 public class Day6 implements Day {
 
@@ -16,9 +17,8 @@ public class Day6 implements Day {
 
     @Override
     public long part2(List<String> input) {
-        return IntStream.range(0, input.size()).boxed()
-                .flatMap(y -> IntStream.range(0, input.get(y).length()).mapToObj(x -> new Point(x, y))
-                ).filter(point -> {
+        return allPoints(input.getFirst().length(), input.size())
+                .filter(point -> {
                     if (input.get(point.y()).charAt(point.x()) == '^') {
                         return false;
                     }
