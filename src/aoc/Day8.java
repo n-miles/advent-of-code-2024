@@ -1,6 +1,7 @@
 package aoc;
 
 import static aoc.Utils.allPoints;
+import static aoc.Utils.charAt;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.IntStream.range;
 
@@ -35,9 +36,9 @@ public class Day8 implements Day {
     }
 
     private static long countAntinodes(List<String> input, Function<Pair<Point, Point>, Stream<Point>> antinodeGenerator) {
-        return allPoints(input.getFirst().length(), input.size())
-                .filter(point -> input.get(point.y()).charAt(point.x()) != '.')
-                .collect(groupingBy(point -> input.get(point.y()).charAt(point.x())))
+        return allPoints(input)
+                .filter(point -> charAt(input, point) != '.')
+                .collect(groupingBy(point -> charAt(input, point)))
                 .values().stream()
                 .flatMap(Utils::allCombinationsUnordered)
                 .flatMap(antinodeGenerator)

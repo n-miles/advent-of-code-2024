@@ -9,7 +9,7 @@ public class Day4 implements Day {
 
     @Override
     public long part1(List<String> input) {
-        return allPoints(input.getFirst().length(), input.size())
+        return allPoints(input)
                 .mapToLong(point -> matchesStartingAt(input, point.x(), point.y()))
                 .sum();
     }

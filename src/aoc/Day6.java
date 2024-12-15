@@ -1,6 +1,7 @@
 package aoc;
 
 import static aoc.Utils.allPoints;
+import static aoc.Utils.charAt;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,9 +18,9 @@ public class Day6 implements Day {
 
     @Override
     public long part2(List<String> input) {
-        return allPoints(input.getFirst().length(), input.size())
+        return allPoints(input)
                 .filter(point -> {
-                    if (input.get(point.y()).charAt(point.x()) == '^') {
+                    if (charAt(input, point) == '^') {
                         return false;
                     }
 
@@ -71,7 +72,7 @@ public class Day6 implements Day {
                 }
 
                 Point newPosition = new Point(dude.position.x() + Δx, dude.position.y() + Δy);
-                if (input.get(newPosition.y()).charAt(newPosition.x()) == '#') {
+                if (charAt(input, newPosition) == '#') {
                     dude.direction = switch (dude.direction) {
                         case UP -> Direction.RIGHT;
                         case RIGHT -> Direction.DOWN;
