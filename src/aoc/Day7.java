@@ -43,19 +43,16 @@ public class Day7 implements Day {
 
     private record Equation(long left, List<Long> right) {
 
-        // Works by encoding each operation as a digit in an integer with base equal to the number of operations
         @SafeVarargs
         private boolean isSatisfyable(BiFunction<Long, Long, Long>... operations) {
-            int radix = operations.length;
-            int lastSequence = parseInt(Long.toString(radix - 1).repeat(right.size() - 1), radix);
+            int opCount = operations.length;
+            int permutations = pow(opCount, right.size());
 
-            for (int operationSequence = 0; operationSequence <= lastSequence; operationSequence++) {
-                String sequenceString = Integer.toString(operationSequence, radix);
-                sequenceString = "0".repeat(right.size() - sequenceString.length() - 1) + sequenceString;
-
+            for (int opSequence = 0; opSequence < permutations; opSequence++) {
                 long total = right.getFirst();
                 for (int i = 1; i < right.size(); i++) {
-                    total = operations[sequenceString.charAt(i - 1) - '0'].apply(total, right.get(i));
+                    int operation = (opSequence / pow(opCount, i - 1)) % opCount;
+                    total = operations[operation].apply(total, right.get(i));
                 }
 
                 if (total == left) {
@@ -65,5 +62,9 @@ public class Day7 implements Day {
 
             return false;
         }
+    }
+
+    private static int pow(int base, int exp) {
+        return (int) Math.pow(base, exp);
     }
 }
